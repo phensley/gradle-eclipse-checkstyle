@@ -1,5 +1,16 @@
 
+buildscript {
+  repositories {
+    maven {
+      url "https://plugins.gradle.org/m2/"
+    }
+    dependencies {
+      classpath "com.gradle.publish:plugin-publish-plugin:0.9.0"
+    }
+  }
+}
 
+apply plugin: "com.gradle.plugin-publish"
 apply plugin: 'java'
 apply plugin: 'java-gradle-plugin'
 apply plugin: 'eclipse'
@@ -9,12 +20,25 @@ group = 'com.glonk.gradle'
 sourceCompatibility = 1.6
 targetCompatibility = 1.6
 
-repositories {
-    mavenCentral()
+dependencies {
+  compile gradleApi()
 }
 
-dependencies {
-    compile gradleApi()
-    compile localGroovy()
+project.ext {
+  gitUrl = 'http://github.com/phensley/gradle-eclipse-checkstyle'
+}
+
+pluginBundle {
+  website = gitUrl
+  vcsUrl = gitUrl
+  description = 'Configures Eclipse Checkstyle plugin from Gradle'
+  tags = ['eclipse', 'checkstyle']
+
+  plugins {
+    eclipseCheckstylePlugin {
+      id = 'com.glonk.eclipse-checkstyle'
+      displayName = 'Gradle Eclipse Checkstyle plugin'
+    }
+  }
 }
 
