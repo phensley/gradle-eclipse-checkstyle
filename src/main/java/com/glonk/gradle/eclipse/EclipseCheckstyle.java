@@ -66,7 +66,7 @@ public class EclipseCheckstyle {
     String configPath = configFile.toString();
     String projectDir = project.getProjectDir().getAbsolutePath() + File.separator;
     String name = project.getName() + "-checkstyle";
-    write(projectDir, CHECKSTYLE_CONFIG, build(name, configPath, new HashSet<String>(prefs.exclude)));
+    write(projectDir, CHECKSTYLE_CONFIG, build(name, configPath, prefs));
   }
 
   public void clean() {
@@ -81,10 +81,15 @@ public class EclipseCheckstyle {
    * Quick-n-very-dirty XML generation.  If further configuration is required for this
    * plugin we can generalize this, do proper escaping, etc.
    */
-  private String build(String name, String path, Set<String> exclude) {
+  private String build(String name, String path, EclipseCheckstyleExtension prefs) {
+    Set<String> exclude = new HashSet<String>(prefs.exclude);
+    
     StringBuilder buf = new StringBuilder();
     buf.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-    buf.append("<fileset-config file-format-version=\"1.2.0\" simple-config=\"true\" sync-formatter=\"false\">\n");
+    buf.append("<fileset-config file-format-version=\"1.2.0\" simple-config=\"true\" ")
+      .append("sync-formatter=\"")
+      .append(prefs.syncFormatter)
+      .append("\">\n");
     
     buf.append("<local-check-config name=\"")
       .append(name)
