@@ -1,0 +1,4 @@
+
+include ':consumer-foo'
+include ':consumer-bar'
+

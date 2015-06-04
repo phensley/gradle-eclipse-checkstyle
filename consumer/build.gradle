@@ -1,0 +1,26 @@
+
+buildscript {
+  dependencies {
+    classpath files("../build/classes/main", "../build/resources/main")
+  }
+}
+
+
+subprojects {
+
+  group 'com.glonk.consumer'
+
+  apply plugin: 'java'
+  apply plugin: 'checkstyle'
+  apply plugin: 'com.glonk.eclipse-checkstyle'
+
+  checkstyle {
+    toolVersion = '5.7'
+    configFile = rootProject.file('checkstyle.xml')
+  }
+
+  eclipseCheckstyle {
+    exclude = ["derived"]
+  }
+}
+
