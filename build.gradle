@@ -1,6 +1,7 @@
 
 buildscript {
   repositories {
+    mavenLocal()
     maven {
       url "https://plugins.gradle.org/m2/"
     }
@@ -15,6 +16,10 @@ apply plugin: 'java'
 apply plugin: 'java-gradle-plugin'
 apply plugin: 'eclipse'
 
+// Moved version here from gradle.properties temporarily
+// until GRADLE-3281 is fixed..
+version = '0.0.2'
+
 group = 'com.glonk.gradle'
 
 sourceCompatibility = 1.6
@@ -23,6 +28,7 @@ targetCompatibility = 1.6
 dependencies {
   compile gradleApi()
 }
+
 
 project.ext {
   gitUrl = 'http://github.com/phensley/gradle-eclipse-checkstyle'

@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.gradle.api.Action;
 import org.gradle.api.Project;
 import org.gradle.api.Task;
 import org.gradle.api.logging.Logger;
@@ -13,7 +14,9 @@ import org.gradle.api.plugins.ExtensionContainer;
 import org.gradle.api.plugins.quality.CheckstyleExtension;
 
 
-public class EclipseCheckstyleGenerator {
+public class EclipseCheckstyle {
+  
+  private static final String CHECKSTYLE_CONFIG = ".checkstyle";
   
   private static final String FLAG_DERIVED = "derived";
   
@@ -21,12 +24,30 @@ public class EclipseCheckstyleGenerator {
   
   private final Logger log;
   
-  public EclipseCheckstyleGenerator(Task task) {
+  public EclipseCheckstyle(Task task) {
     this.project = task.getProject();
     this.log = task.getLogger();
   }
 
-  public void execute() {
+  public static Action<Task> generateAction() {
+    return new Action<Task>() {
+      @Override
+      public void execute(Task task) {
+        new EclipseCheckstyle(task).generate();
+      }
+    };
+  }
+  
+  public static Action<Task> cleanAction() {
+    return new Action<Task>() {
+      @Override
+      public void execute(Task task) {
+        new EclipseCheckstyle(task).clean();
+      }
+    };
+  }
+  
+  public void generate() {
     ExtensionContainer extensions = project.getExtensions();
     EclipseCheckstyleExtension prefs = extensions.getByType(EclipseCheckstyleExtension.class);
     
@@ -45,9 +66,17 @@ public class EclipseCheckstyleGenerator {
     String configPath = configFile.toString();
     String projectDir = project.getProjectDir().getAbsolutePath() + File.separator;
     String name = project.getName() + "-checkstyle";
-    write(projectDir, ".checkstyle", build(name, configPath, new HashSet<String>(prefs.exclude)));
+    write(projectDir, CHECKSTYLE_CONFIG, build(name, configPath, new HashSet<String>(prefs.exclude)));
   }
 
+  public void clean() {
+    String projectDir = project.getProjectDir().getAbsolutePath();
+    File configFile = new File(projectDir, CHECKSTYLE_CONFIG);
+    if (configFile.exists()) {
+      configFile.delete();
+    }
+  }
+  
   /**
    * Quick-n-very-dirty XML generation.  If further configuration is required for this
    * plugin we can generalize this, do proper escaping, etc.
