@@ -18,7 +18,7 @@ apply plugin: 'eclipse'
 
 // Moved version here from gradle.properties temporarily
 // until GRADLE-3281 is fixed..
-version = '0.0.3'
+version = '0.0.4'
 
 group = 'com.glonk.gradle'
 
