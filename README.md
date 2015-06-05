@@ -11,6 +11,7 @@ Gradle configuration of Eclipse Checkstyle plugin.  Currently it does 2 things:
 
 ```
 eclipseCheckstyle {
+    syncFormatter = true
     exclude = ['derived']
 }
 ```
