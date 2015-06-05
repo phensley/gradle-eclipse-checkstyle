@@ -23,6 +23,8 @@ public class EclipseCheckstylePlugin implements Plugin<Project> {
   private static final String CHECKSTYLE_NATURE = "net.sf.eclipsecs.core.CheckstyleNature";
 
   private static final String CHECKSTYLE_BUILDER = "net.sf.eclipsecs.core.CheckstyleBuilder";
+
+  private static final String JAVA_BUILDER = "org.eclipse.jdt.core.javabuilder";
   
   @Override
   public void apply(Project project) {
@@ -35,6 +37,10 @@ public class EclipseCheckstylePlugin implements Plugin<Project> {
     EclipseModel eclipseModel = project.getExtensions().getByType(EclipseModel.class);
     EclipseProject eclipseProject = eclipseModel.getProject();
     eclipseProject.natures(CHECKSTYLE_NATURE);
+    
+    // Explicitly set the Java builder before Checkstyle so they don't get added
+    // in an arbitrary order.
+    eclipseProject.buildCommand(JAVA_BUILDER);
     eclipseProject.buildCommand(CHECKSTYLE_BUILDER);
     
     // Wire up our actions to the relevant eclipse tasks..
