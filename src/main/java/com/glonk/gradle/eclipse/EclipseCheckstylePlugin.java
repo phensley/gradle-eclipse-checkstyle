@@ -20,6 +20,8 @@ public class EclipseCheckstylePlugin implements Plugin<Project> {
 
   private static final String ECLIPSE_CHECKSTYLE = "eclipseCheckstyle";
   
+  private static final String GRADLE_NATURE = "org.springsource.ide.eclipse.gradle.core.nature";
+  
   private static final String CHECKSTYLE_NATURE = "net.sf.eclipsecs.core.CheckstyleNature";
 
   private static final String CHECKSTYLE_BUILDER = "net.sf.eclipsecs.core.CheckstyleBuilder";
@@ -30,14 +32,14 @@ public class EclipseCheckstylePlugin implements Plugin<Project> {
   public void apply(Project project) {
     project.apply(dependencies(ECLIPSE_TASK));
     project.apply(dependencies(CHECKSTYLE_TASK));
-    
+
     project.getExtensions().create(ECLIPSE_CHECKSTYLE, EclipseCheckstyleExtension.class);
     
     // Ensure that the project has the checkstyle nature / builder applied
     EclipseModel eclipseModel = project.getExtensions().getByType(EclipseModel.class);
     EclipseProject eclipseProject = eclipseModel.getProject();
-    eclipseProject.natures(CHECKSTYLE_NATURE);
-    
+    eclipseProject.natures(CHECKSTYLE_NATURE, GRADLE_NATURE);
+  
     // Explicitly set the Java builder before Checkstyle so they don't get added
     // in an arbitrary order.
     eclipseProject.buildCommand(JAVA_BUILDER);
@@ -53,6 +55,7 @@ public class EclipseCheckstylePlugin implements Plugin<Project> {
     if (task != null) {
       task.doLast(EclipseCheckstyle.cleanAction());
     }
+
   }
   
   private static Map<String, ?> dependencies(String plugin) {

@@ -19,7 +19,7 @@ apply plugin: 'maven'
 
 // Moved version here from gradle.properties temporarily
 // until GRADLE-3281 is fixed..
-version = '0.0.5'
+version = '0.0.6'
 
 group = 'com.glonk.gradle'
 
