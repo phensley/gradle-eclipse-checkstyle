@@ -15,10 +15,11 @@ apply plugin: "com.gradle.plugin-publish"
 apply plugin: 'java'
 apply plugin: 'java-gradle-plugin'
 apply plugin: 'eclipse'
+apply plugin: 'maven'
 
 // Moved version here from gradle.properties temporarily
 // until GRADLE-3281 is fixed..
-version = '0.0.4'
+version = '0.0.5'
 
 group = 'com.glonk.gradle'
 
@@ -28,7 +29,6 @@ targetCompatibility = 1.6
 dependencies {
   compile gradleApi()
 }
-
 
 project.ext {
   gitUrl = 'http://github.com/phensley/gradle-eclipse-checkstyle'
